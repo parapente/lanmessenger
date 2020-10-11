@@ -23,6 +23,7 @@
 
 
 #include <QDesktopServices>
+#include <QRandomGenerator>
 #include <QTimer>
 #include <QUrl>
 #include "mainwindow.h"
@@ -105,8 +106,8 @@ void lmcMainWindow::init(User* pLocalUser, QList<Group>* pGroupList, bool connec
 void lmcMainWindow::start(void) {
 	//	if no avatar is set, select a random avatar (useful when running for the first time)
 	if(nAvatar > AVT_COUNT) {
-		qsrand((uint)QTime::currentTime().msec());
-		nAvatar = qrand() % AVT_COUNT;
+        QRandomGenerator randGen((uint)QTime::currentTime().msec());
+        nAvatar = randGen.generate() % AVT_COUNT;
 	}
 	// This method should only be called from here, otherwise an MT_Notify message is sent
 	// and the program will connect to the network before start() is called.
@@ -297,7 +298,7 @@ void lmcMainWindow::settingsChanged(bool init) {
 //			QSize itemSize = ui.tvUserList->view() == ULV_Detailed ? QSize(0, 36) : QSize(0, 20);
 //			childItem->setSizeHint(0, itemSize);
 
-			QString toolTip = statusToolTip ? lmcStrings::statusDesc()[childItem->data(0, StatusRole).toInt()] : QString::null;
+			QString toolTip = statusToolTip ? lmcStrings::statusDesc()[childItem->data(0, StatusRole).toInt()] : QString();
 			childItem->setToolTip(0, toolTip);
 		}
 	}

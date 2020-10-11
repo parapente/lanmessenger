@@ -25,11 +25,13 @@
 #include <QDesktopServices>
 #include <QDesktopWidget>
 #include <QUrl>
+#include <QGuiApplication>
+#include <QScreen>
 #include "transferwindow.h"
 
 lmcTransferWindow::lmcTransferWindow(QWidget *parent) : QWidget(parent) {
 	ui.setupUi(this);
-	QRect scr = QApplication::desktop()->screenGeometry();
+    QRect scr = QGuiApplication::screens()[0]->geometry();
 	move(scr.center() - rect().center());
 
 	connect(ui.lvTransferList, SIGNAL(currentRowChanged(int)), 

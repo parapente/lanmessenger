@@ -28,6 +28,7 @@
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 #include <openssl/aes.h>
+#include <openssl/bn.h>
 
 #ifndef CRYPTO_H
 #define CRYPTO_H
@@ -84,7 +85,7 @@ private:
 	QMap<QString, EVP_CIPHER_CTX> encryptMap;
 	QMap<QString, EVP_CIPHER_CTX> decryptMap;
 	int bits;
-	long exponent;
+    BIGNUM *exponent;
 };
 
 #endif // CRYPTO_H

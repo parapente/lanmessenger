@@ -73,9 +73,9 @@ void lmcCore::init(const QString& szCommandArgs) {
 	//	prevent auto app exit when last visible window is closed
 	qApp->setQuitOnLastWindowClosed(false);
 
-	QStringList arguments = szCommandArgs.split("\n", QString::SkipEmptyParts);
+    QStringList arguments = szCommandArgs.split("\n", Qt::SkipEmptyParts);
 	//	remove duplicates
-	arguments = arguments.toSet().toList();
+    arguments = QSet<QString>(arguments.begin(), arguments.end()).values();
 
 	pInitParams = new XmlMessage();
 	if(arguments.contains("/silent", Qt::CaseInsensitive))
@@ -345,9 +345,9 @@ bool lmcCore::receiveAppMessage(const QString& szMessage) {
 		return doNotExit;
 	}
 
-	QStringList messageList = szMessage.split("\n", QString::SkipEmptyParts);
+    QStringList messageList = szMessage.split("\n", Qt::SkipEmptyParts);
 	//	remove duplicates
-	messageList = messageList.toSet().toList();
+    messageList = QSet<QString>(messageList.begin(), messageList.end()).values();
 
 	if(messageList.contains("/new", Qt::CaseInsensitive)) {
 		if(messageList.contains("/loopback", Qt::CaseInsensitive))
@@ -634,7 +634,7 @@ void lmcCore::routeMessage(MessageType type, QString* lpszUserId, XmlMessage* pM
 			chatWindows[index]->receiveMessage(type, lpszUserId, pMessage);
 		}
 	} else {
-        QString threadId = pMessage ? pMessage->data(XN_THREAD) : QString::null;
+        QString threadId = pMessage ? pMessage->data(XN_THREAD) : QString();
 		
 		switch(type) {
         case MT_Avatar:

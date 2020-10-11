@@ -29,8 +29,9 @@ lmcCrypto::lmcCrypto(void) {
 	pRsa = NULL;
 	encryptMap.clear();
 	decryptMap.clear();
-	bits = 1024;
-	exponent = 65537;
+    bits = 1024;
+    exponent = BN_new();
+    BN_set_word(exponent, RSA_F4);
 }
 
 lmcCrypto::~lmcCrypto(void) {
@@ -41,7 +42,8 @@ lmcCrypto::~lmcCrypto(void) {
 QByteArray lmcCrypto::generateRSA(void) {
 	unsigned char* buf = (unsigned char*)malloc(bits);
 	RAND_seed(buf, bits);
-	pRsa = RSA_generate_key(bits, exponent, NULL, NULL);
+    pRsa = RSA_new();
+    RSA_generate_key_ex(pRsa, bits, exponent, NULL);
 
 	BIO* bio = BIO_new(BIO_s_mem());
 	PEM_write_bio_RSAPublicKey(bio, pRsa);

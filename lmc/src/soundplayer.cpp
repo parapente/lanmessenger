@@ -23,7 +23,7 @@
 
 #include <QtGlobal>
 #ifdef Q_OS_WIN
-#include <Windows.h>
+#include <windows.h>
 #include <QLibrary>
 #else
 #include <QSound>

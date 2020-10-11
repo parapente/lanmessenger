@@ -23,6 +23,8 @@
 
 
 #include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include "historywindow.h"
 
 lmcHistoryWindow::lmcHistoryWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
@@ -39,7 +41,7 @@ lmcHistoryWindow::lmcHistoryWindow(QWidget *parent, Qt::WindowFlags flags) : QWi
 	sizes.append(width() * 0.35);
 	sizes.append(width() - width() * 0.35 - ui.splitter->handleWidth());
 	ui.splitter->setSizes(sizes);
-	QRect scr = QApplication::desktop()->screenGeometry();
+    QRect scr = QGuiApplication::screens()[0]->geometry();
 	move(scr.center() - rect().center());
 
 	connect(ui.tvMsgList, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),

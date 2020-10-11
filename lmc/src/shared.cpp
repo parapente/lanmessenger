@@ -24,13 +24,14 @@
 
 #include "shared.h"
 #ifdef Q_OS_WIN
-#include <Windows.h>
+#include <windows.h>
 #include <lmcons.h>
 #else
 #include <stdlib.h>
 #endif
 #include <QStringList>
 #include <QFile>
+#include <QOperatingSystemVersion>
 
 int Helper::indexOf(const QString array[], int size, const QString& value) {
 	for(int index = 0; index < size; index++) {
@@ -82,7 +83,7 @@ QString Helper::getLogonName(void) {
         return QString::fromLatin1(szUserName);
 #endif
 
-	return QString::null;
+    return QString();
 }
 
 QString Helper::getHostName(void) {
@@ -90,67 +91,7 @@ QString Helper::getHostName(void) {
 }
 
 QString Helper::getOSName(void) {
-	QString osName = "Unknown";
-
-#if defined Q_OS_WIN
-	switch(QSysInfo::WindowsVersion) {
-	case QSysInfo::WV_NT:
-		osName = "Windows NT";
-		break;
-	case QSysInfo::WV_2000:
-		osName = "Windows 2000";
-		break;
-	case QSysInfo::WV_XP:
-		osName = "Windows XP";
-		break;
-	case QSysInfo::WV_2003:
-		osName = "Windows Server 2003";
-		break;
-	case QSysInfo::WV_VISTA:
-		osName = "Windows Vista";
-		break;
-	case QSysInfo::WV_WINDOWS7:
-		osName = "Windows 7";
-		break;
-    default:
-        osName = "Windows";
-        break;
-	}
-#elif defined Q_OS_MAC
-    switch(QSysInfo::MacintoshVersion) {
-    case QSysInfo::MV_CHEETAH:
-        osName = "Mac OS X 10.0";
-        break;
-    case QSysInfo::MV_PUMA:
-        osName = "Mac OS X 10.1";
-        break;
-    case QSysInfo::MV_JAGUAR:
-        osName = "Mac OS X 10.2";
-        break;
-    case QSysInfo::MV_PANTHER:
-        osName = "Mac OS X 10.3";
-        break;
-    case QSysInfo::MV_TIGER:
-        osName = "Mac OS X 10.4";
-        break;
-    case QSysInfo::MV_LEOPARD:
-        osName = "Mac OS X 10.5";
-        break;
-    case QSysInfo::MV_SNOWLEOPARD:
-        osName = "Mac OS X 10.6";
-        break;
-	case QSysInfo::MV_LION:
-		osName = "Mac OS X 10.7";
-		break;
-    default:
-        osName = "Mac OS X";
-        break;
-    }
-#elif defined Q_OS_X11
-	osName = "Linux/X11";
-#endif
-
-	return osName;
+    return QOperatingSystemVersion::current().name();
 }
 
 QString Helper::escapeDelimiter(QString *lpszData) {
@@ -166,8 +107,8 @@ QString Helper::unescapeDelimiter(QString* lpszData) {
 //	>0 if version 1 is newer
 //	0 if both versions are same
 int Helper::compareVersions(const QString& version1, const QString& version2) {
-	QStringList v1 = version1.split(".", QString::SkipEmptyParts);
-	QStringList v2 = version2.split(".", QString::SkipEmptyParts);
+    QStringList v1 = version1.split(".", Qt::SkipEmptyParts);
+    QStringList v2 = version2.split(".", Qt::SkipEmptyParts);
 
 	//	Assuming that the version is in x.x.x format, we only need to iterate 3 times
 	for(int index = 0; index < 3; index++) {
