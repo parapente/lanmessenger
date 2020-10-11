@@ -29,6 +29,7 @@
 #include <openssl/pem.h>
 #include <openssl/aes.h>
 #include <openssl/bn.h>
+#include <openssl/evp.h>
 
 #ifndef CRYPTO_H
 #define CRYPTO_H
@@ -49,8 +50,8 @@ public:
 
 private:
 	RSA* pRsa;
-	QMap<QString, EVP_CIPHER_CTX> encryptMap;
-	QMap<QString, EVP_CIPHER_CTX> decryptMap;
+    QMap<QString, EVP_CIPHER_CTX*> encryptMap;
+    QMap<QString, EVP_CIPHER_CTX*> decryptMap;
 	int bits;
     BIGNUM *exponent;
 };
