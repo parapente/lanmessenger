@@ -56,7 +56,11 @@ void lmcTrace::write(const QString& string, bool verbose) {
 	QTextStream stream(&file);
 
 	QString timeStamp = "[" + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss") + "] ";
+#if QT_VERSION < QT_VERSION_CHECK (5, 14, 0)
+    QStringList stringList = string.split("\n", QString::SkipEmptyParts);
+#else
     QStringList stringList = string.split("\n", Qt::SkipEmptyParts);
+#endif
 	for(int index = 0; index < stringList.count(); index++)
 		stream << timeStamp << stringList[index] << "\n";
 

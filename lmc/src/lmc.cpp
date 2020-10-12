@@ -73,9 +73,15 @@ void lmcCore::init(const QString& szCommandArgs) {
 	//	prevent auto app exit when last visible window is closed
 	qApp->setQuitOnLastWindowClosed(false);
 
+#if QT_VERSION < QT_VERSION_CHECK (5, 14, 0)
+    QStringList arguments = szCommandArgs.split("\n", QString::SkipEmptyParts);
+	//	remove duplicates
+    arguments = arguments.toSet().toList();
+#else
     QStringList arguments = szCommandArgs.split("\n", Qt::SkipEmptyParts);
 	//	remove duplicates
     arguments = QSet<QString>(arguments.begin(), arguments.end()).values();
+#endif
 
 	pInitParams = new XmlMessage();
 	if(arguments.contains("/silent", Qt::CaseInsensitive))
@@ -345,9 +351,15 @@ bool lmcCore::receiveAppMessage(const QString& szMessage) {
 		return doNotExit;
 	}
 
+#if QT_VERSION < QT_VERSION_CHECK (5, 14, 0)
+    QStringList messageList = szMessage.split("\n", QString::SkipEmptyParts);
+	//	remove duplicates
+    messageList = messageList.toSet().toList();
+#else
     QStringList messageList = szMessage.split("\n", Qt::SkipEmptyParts);
 	//	remove duplicates
     messageList = QSet<QString>(messageList.begin(), messageList.end()).values();
+#endif
 
 	if(messageList.contains("/new", Qt::CaseInsensitive)) {
 		if(messageList.contains("/loopback", Qt::CaseInsensitive))

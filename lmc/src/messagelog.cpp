@@ -392,7 +392,11 @@ void lmcMessageLog::onAnchorClicked(const QUrl &url)
         return;
     }
 
+#if QT_VERSION < QT_VERSION_CHECK (5, 14, 0)
+    QStringList linkData = linkPath.split("/", QString::SkipEmptyParts);
+#else
     QStringList linkData = linkPath.split("/", Qt::SkipEmptyParts);
+#endif
     FileMode mode;
     FileOp op;
 

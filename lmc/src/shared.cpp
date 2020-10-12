@@ -107,8 +107,13 @@ QString Helper::unescapeDelimiter(QString* lpszData) {
 //	>0 if version 1 is newer
 //	0 if both versions are same
 int Helper::compareVersions(const QString& version1, const QString& version2) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    QStringList v1 = version1.split(".", QString::SkipEmptyParts);
+    QStringList v2 = version2.split(".", QString::SkipEmptyParts);
+#else
     QStringList v1 = version1.split(".", Qt::SkipEmptyParts);
     QStringList v2 = version2.split(".", Qt::SkipEmptyParts);
+#endif
 
 	//	Assuming that the version is in x.x.x format, we only need to iterate 3 times
 	for(int index = 0; index < 3; index++) {
